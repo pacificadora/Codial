@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express();
+const expressLayouts = require('express-ejs-layouts');
 const port = 8000;
 
+app.use(expressLayouts);
 
 //use express router
 //creating the middleware.
