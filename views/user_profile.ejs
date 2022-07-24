@@ -2,3 +2,10 @@
 <h1>
     Codial <%= title%>
 </h1>
+
+<p>Name: <%= user.name %></p>
+<p>Email: <%= user.email %></p>
+
+<form action="/users/clear-cookie" method="POST">
+    <input type="submit" name="signout" id="" value="signout">
+</form>

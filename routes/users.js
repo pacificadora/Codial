@@ -10,4 +10,7 @@ router.get('/signin', userController.signin);
 
 router.post('/create', userController.create);
 
+router.post('/create-session', userController.createSession);
+
+router.post('/clear-cookie', userController.clear);
 module.exports = router;
