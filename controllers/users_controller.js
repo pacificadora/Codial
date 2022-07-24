@@ -15,11 +15,10 @@ module.exports.profile = function(req, res){
     }
 }
 
+//making functionality for signout button and clearing cookies
 module.exports.clear = function(req, res){
-    if(req.cookies.user_id){
-        res.cookies.clear;
-        return res.redirect('/users/signin');
-    }
+    res.clearCookie('user_id');
+    return res.redirect('/users/signin');
 }
 
 //render the sign up page
