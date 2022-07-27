@@ -3,7 +3,7 @@ const passport = require('passport');
 const router = express.Router();
 
 const userController = require('../controllers/users_controller');
-router.get('/profile', userController.profile);
+router.get('/profile', passport.checkAuthentication,userController.profile);
 
 router.get('/signup', userController.signup);
 router.get('/signin', userController.signin);
@@ -16,5 +16,18 @@ router.post('/create-session', passport.authenticate(
     'local',
     {failureRedirect: '/users/signin'},
 ), userController.createSession);
+
+//as it was written in the videos
+//router.get('/signout', userController.destroySession);
+
+//but the methods are now changed and hence below written way is the corrct way
+router.get('/signout', function(req, res, next){
+    req.logOut(function(err){
+        if(err){
+            return next(err);
+        }
+        return res.redirect('/');
+    })
+})
 
 module.exports = router;

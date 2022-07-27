@@ -7,6 +7,7 @@ const db = require('./config/moongose');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 
 
@@ -31,6 +32,7 @@ app.set('views', './views');
 
 
 //now we will add a middleware that takes up the session cookie and encrypt it using express-session
+//mongo store is used to store the session cookie in the db
 app.use(session({
     name: 'codial',
     // TODO change the secret before deployment in production mode
@@ -39,12 +41,24 @@ app.use(session({
     resave: false,
     cookie: {
         maxAge: (1000 * 60 * 100)
-    }
+    },
+    store: MongoStore.create(
+        {
+            //mongooseConnection: db,
+            //this is done differently in the videos, due to different versions of connect-mongo
+            mongoUrl: 'mongodb://localhost:27017',
+            autoRemove: 'disabled',
+        },
+        function(err){
+            console.log(err || 'connect-mongo db setup ok');
+        }
+    )
 }))
 
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(passport.setAuthentiatedUser)
 
 //use express router
 //creating the middleware.
