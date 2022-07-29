@@ -5,8 +5,25 @@
 
 <section id="feed-posts">
     <h4>Posts</h4>
-    <form action="" id="new-post-form" method="POST">
-        <textarea name="content" cols="30" rows="3"></textarea>
-        <input type="submit" value="Post">
-    </form>
+    <!-- if user is logged in then only the form for post will be available -->
+    <!-- but someone can go to inspec and create one more form in the inspect elements itself and can manipulate the code
+    to keep a check on that checkAuthentication function is applied at the route.posts also. So 2 way check -->
+    <% if(locals.user) {%>
+        <form action="/posts/create" id="new-post-form" method="POST">
+            <textarea name="content" cols="30" rows="3"></textarea>
+            <input type="submit" value="Post">
+        </form>
+    <%} %>
+
+    <div id="posts-lidt-container">
+        <ul>
+            <% for(post of posts){%>
+                <li>
+                    <%= post.content %>
+                </li>
+                <small><%= post.user.name %></small>
+            <%} %>
+        </ul>
+    </div>
+
 </section>
