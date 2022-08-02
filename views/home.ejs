@@ -19,9 +19,24 @@
         <ul>
             <% for(post of posts){%>
                 <li>
-                    <%= post.content %>
+                    <p>
+                        <%= post.content %>
+                        <br>
+                        <small>
+                            <%= post.user.name %>
+                        </small>
+                    </p>
+                    <div class="post-comment">
+                        <% if(locals.user){ %>
+                            <form action="/comment/create" method="post">
+                                <input type="text" name="content" placeholder="type here to add comment">
+                                <!-- here we are sending the id of the post the comment is associated with -->
+                                <input type="hidden" name="post" value="<%= post._id %>">
+                                <input type="submit" value="add comment">
+                            </form>
+                        <% } %>
+                    </div>
                 </li>
-                <small><%= post.user.name %></small>
             <%} %>
         </ul>
     </div>
