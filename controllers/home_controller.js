@@ -22,13 +22,13 @@ module.exports.home = function(req, res){
     .populate({
         path: 'comments',
         populate: {
-            path: 'user',
+            path: 'user'
         }
     })
     .exec(function(err, posts){
         return res.render('home', {
             title: "Codial | Home",
-            posts: posts,
+            posts:  posts
         });
     })
 }
