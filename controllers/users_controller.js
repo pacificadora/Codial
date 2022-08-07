@@ -9,6 +9,17 @@ module.exports.profile = function(req, res){
     })
 }
 
+module.exports.update = function(req, res){
+    // if the current login user's id matches the req.params.id then only changes are possible.
+    if(req.user.id == req,params.id){
+        User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
+            return res.redirect('back');
+        });
+    }else{
+        return res.status(401).send('Unauthorized');
+    }
+}
+
 
 //render the sign up page
 module.exports.signup = function(req, res){
