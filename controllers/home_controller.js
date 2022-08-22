@@ -40,7 +40,7 @@ const User = require('../models/user');
 try{
     module.exports.home = async function(req, res){
         let posts = await Post.find({})
-        .sort('-createdAt')
+        .sort('-createdAt')//to sort the post in the nearest manner. 
         .populate('user')
         .populate({
             path: 'comments',
