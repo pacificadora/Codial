@@ -1,4 +1,6 @@
 const User = require('../models/user')
+const fs = require('fs');
+const path = require('path');
 
 
 //lets just keep it as it is and apply no async await
@@ -11,13 +13,42 @@ module.exports.profile = function(req, res){
     })
 }
 
-module.exports.update = function(req, res){
+module.exports.update = async function(req, res){
     // if the current login user's id matches the req.params.id then only changes are possible.
-    if(req.user.id == req,params.id){
-        User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
+    // if(req.user.id == req.params.id){
+    //     User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
+    //         return res.redirect('back');
+    //     });
+    // }else{
+    //     req.flash('error', 'Unauthorised!');
+    //     return res.status(401).send('Unauthorized');
+    // }
+    if(req.user.id == req.params.id){
+        try{
+            let user = await User.findById(req.params.id);
+            User.uploadedAvatar(req, res, function(err){
+                if(err){
+                    console.log('*****multer error: ', err);
+                }
+                console.log(req.file);
+                user.name = req.body.name;
+                user.email = req.body.email;
+                if(req.file){
+                    if(user.avatar){
+                        fs.unlinkSync(path.join(__dirname, '..', user.avatar));
+                    }
+                    //this will save the path of the uploaded file into the avatar field in the user
+                    user.avatar = User.avatarPath + '\\' + req.file.filename;
+                }
+                user.save();
+                return res.redirect('back');
+            })
+        }catch(err){
+            req.flash('error', err);
             return res.redirect('back');
-        });
+        }
     }else{
+        req.flash('error', 'Unauthorised!');
         return res.status(401).send('Unauthorized');
     }
 }
