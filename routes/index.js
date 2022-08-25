@@ -11,6 +11,8 @@ router.use('/comments', require('./comments'));
 //router.use('/routerName', require('./routerFile'))
 //this way multiple routers can be set up.
 
+router.use('/api', require('./api'));
+
 console.log("router loaded");
 
 module.exports = router;
