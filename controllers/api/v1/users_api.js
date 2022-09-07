@@ -14,7 +14,7 @@ module.exports.createSession = async function(req, res){
         return res.json(200, {
             message: 'signin is successful, here is your token, please keep it safe',
             data:{
-                token: jwt.sign(user.toJSON(), 'codial', {expiresIn: '10000'}) //using the same key used in passport-jwt-strategy
+                token: jwt.sign(user.toJSON(), 'codial', {expiresIn: '100000'}) //using the same key used in passport-jwt-strategy
             }
         })
 
